@@ -58,7 +58,8 @@ public class Base64Decoder {
 		}
 			byte[] r =new byte[3];
 			for (int i = 0; i < 3;i++) {
-				r[i]=(byte)binaryToInteger(cb.substring(8*i, 8*i+8));
+				//System.out.println(cb.substring(8*i,8*i+8));
+				r[i]=(byte)Integer.parseInt(cb.substring(8*i, 8*i+8),2);
 			}
 			
 		
@@ -73,11 +74,17 @@ public class Base64Decoder {
 		char [] stringChars = file.toCharArray();
 		for (int i = 0; i < stringChars.length; i++) {
 			int x=indexOfCharArray(base64Chars, stringChars[i]);
-			cb+=returnIntBinary(x);
+			//System.out.println(returnIntBinarySix(43));
+			cb+=returnIntBinarySix(x);
+	
+			
 		}
-			byte[] r =new byte[stringChars.length*3/4];
+			byte[] r =new byte[(stringChars.length*3)/4];
+			System.out.println(r.length);
+			System.out.println(cb.length());
 			for (int i = 0; i < r.length;i++) {
-				r[i]=(byte)binaryToInteger(cb.substring(8*i, 8*i+8));
+				r[i]=(byte)Integer.parseInt(cb.substring(8*i, 8*i+8),2);
+				//System.out.println(r[i]);
 			}
 			
 		
@@ -125,12 +132,29 @@ public class Base64Decoder {
 		
 		while(b.length()<y) {
 			b+="0";
-			System.out.println(b);
+			//System.out.println(b);
 		}
 			return b;
 
 		
 		}
+	public static String returnIntBinarySix(int i) {
+		String r = "";
+		int x=32;
+		for (int j = 0; j < 6; j++) {
+			if(i>=x) {
+				r+=1;
+				x=x/2;
+				i-=Math.pow(2,5-j);
+			}
+			else {
+				r+=0;
+				x=x/2;
+			
+			}
+		}
+		return r;
+	}
 	public static int binaryToInteger(String binary) {
 	    char[] numbers = binary.toCharArray();
 	    int result = 0;
